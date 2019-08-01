@@ -5,6 +5,31 @@
 
 #include "ChronoPrecis.h" 
 #include "Canimation.h"
+#include <vector>
+
+
+//#define FAST_ANIM
+
+#ifdef FAST_ANIM
+#define RANDOBJ_MIN_TICK 1000
+#define RANDOBJ_MAX_TICK 1001
+#define RANDOBJ_MIN_INIT 1000
+#define RANDOBJ_MAX_INIT 1001
+#else
+#define RANDOBJ_MIN_TICK 15000
+#define RANDOBJ_MAX_TICK 45000
+#define RANDOBJ_MIN_INIT 5000
+#define RANDOBJ_MAX_INIT 2000
+#endif
+
+typedef void(*ADD_RANDOM_OBJ)(Canimation *anim, int posy_waterline);
+
+typedef struct {
+	ADD_RANDOM_OBJ func;
+	int weight;
+	bool needsWater;
+} RandObj_t;
+
 
 class Caquarium
 {
@@ -28,6 +53,8 @@ public:
 private:
     int m_initok;
     bool m_favoriseCredits;
+	std::vector<RandObj_t> m_objList;
+	int m_randTotWeight;
 } ;
 
 #endif // defined(ASCIIANIM_H_INCLUDED)

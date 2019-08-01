@@ -45,9 +45,6 @@ void create_water_line(Csprite &wl, int screen_width, bool sansEau)
     char *water_line_segmentVide[]=
     {
 		" ",
-		" ",
-		" ",
-		" " 
     };
 
     char **water_line_segment;
@@ -113,6 +110,38 @@ Csprite Castel(
 "            yyyyyyy\n"
 ,
 DARKGRAY, 22,DIR_RIGHT,"castel" );
+
+Csprite Diver(
+"$$$$$$$$)\n"
+"$$$$$$$(\n"
+"$$$$$$$$)\n"
+"$$$$$$$/\n"
+"$$$$$_.|._\n"
+"$$$$/ _:_ \\\n"
+"$$$|.(_\"_).|\n"
+"$$$_\\. : ./_\n"
+"$$/ |..:..| \\\n"
+"$/_/ `---' \\_\\\n"
+"$\\_)       (_/\n"
+"$$$\\   T   /\n"
+"$$$_)__|__(_\n"
+"$$/....|....\\"
+,
+"         \n"
+"        \n"
+"         \n"
+"        \n"
+"     CC CC\n"
+"    C ggg C\n"
+"   C ggggg C\n"
+"   YCC C CCY\n"
+"  Y ryyyyyr Y\n"
+" YYY rrrrr YYY\n"
+" YYY       YYY\n"
+"   r   r   r\n"
+"   BrBBrBBrB\n"
+"  BBBBBBBBBBB"
+, LIGHTGRAY, 0, DIR_RIGHT, "diver" );
 
 Csprite Skull(
 /*
@@ -1132,7 +1161,7 @@ int ms2tick(int ms)
 void add_castel(Canimation *anim);
 void castel_callback (int tick, Canimation *anim, Csprite *castel, int sourceposX, int sourceposY)
 {
-    if (!castel || !anim) return;
+	if (!castel || !anim) { return; }
     // death callback
 
     add_castel(anim);
@@ -1150,8 +1179,9 @@ void add_castel(Canimation *anim)
 
 void setweedsize(Csprite *seaweed, int maxlen, int currentlen, int type /* 0=(  1={*/)
 {
-    if ( seaweed->get_nb_shape()!=2 )
-        return; // ne devrait jamais arriver...
+	if (seaweed->get_nb_shape() != 2) {
+		return; // ne devrait jamais arriver...
+	}
 
     char *typeLr[]={ "($\n", "{$\n" };
     char *typeLl[]={ "$)\n", "$}\n" };
@@ -1191,7 +1221,7 @@ void setweedsize(Csprite *seaweed, int maxlen, int currentlen, int type /* 0=(  
 
 void seaweed_callback(int tick, Canimation *anim, Csprite *seaweed, int sourceposX, int sourceposY)
 {
-	if (seaweed->m_life_duration <1 ) return;
+	if (seaweed->m_life_duration < 1) { return; }
     // ration de 0 à 1 pour 0=naissance 1=mort
 	double ratio=(double)seaweed->m_lifetick/seaweed->m_life_duration;
 
@@ -1205,7 +1235,7 @@ void seaweed_callback(int tick, Canimation *anim, Csprite *seaweed, int sourcepo
 		int currentstep=seaweed->callback_data2;
 		if( ratio/GROW_PERIOD*nbstep > currentstep )
 		{
-			if (seaweed->callback_data2<nbstep) seaweed->callback_data2++;
+			if (seaweed->callback_data2 < nbstep) { seaweed->callback_data2++; }
 			setweedsize(seaweed,nbstep,seaweed->callback_data2, seaweed->callback_data3);
 		}
 	}
@@ -1217,7 +1247,7 @@ void seaweed_callback(int tick, Canimation *anim, Csprite *seaweed, int sourcepo
 		ratio = ratio-(1-DEATH_PERIOD);
 		if( ratio/DEATH_PERIOD*nbstep > (nbstep-currentstep) )
 		{
-			if (seaweed->callback_data2>0) seaweed->callback_data2--;
+			if (seaweed->callback_data2 > 0) { seaweed->callback_data2--; }
 			setweedsize(seaweed,nbstep,seaweed->callback_data2, seaweed->callback_data3);
 		};
 	}
@@ -1342,8 +1372,9 @@ void splash_callback (int tick, Canimation *anim, Csprite *bubble, int sourcepos
 {
     if (!bubble|| !anim) return;
     {
-	    if( randomval(0,100) > 90 )
-            add_splash(anim, bubble, sourceposX, sourceposY);
+		if (randomval(0, 100) > 90) {
+			add_splash(anim, bubble, sourceposX, sourceposY);
+		}
 	}
 }
 
@@ -1362,21 +1393,21 @@ void add_bubble (Canimation *anim, Csprite *source, int sourceposX, int sourcepo
 
 
     sourceposY += source->get_height()/2;
-    if (source->m_sens==DIR_RIGHT) sourceposX += source->get_width();
+	if (source->m_sens == DIR_RIGHT) { sourceposX += source->get_width(); }
 
     //    b.m_animperiod = anim->height()/5;
     int nbshape=b.get_nb_shape();
     nbshape=max(1,nbshape);
     b.m_animperiod = 1 +   (int)ms2tick(  50*(sourceposY - anim->waterlimit)/ nbshape);  
-   b.m_animperiod = max(1, b.m_animperiod);
+	b.m_animperiod = max(1, b.m_animperiod);
     b.m_deathcallback = splash_callback ;
     anim->add_sprite(b, sourceposX,sourceposY, 0, tick2ms(-0.02),0,0);
 }
 
 void fish_callback (int tick, Canimation *anim, Csprite *fish, int sourceposX, int sourceposY)
 {
-    if (!fish || !anim) return;
-	if (fish->callback_data1==0) return;
+	if (!fish || !anim) { return; }
+	if (fish->callback_data1 == 0) { return; }
 	if( randomval(0,100) > 97 )
     {
 		add_bubble(anim, fish, sourceposX, sourceposY);
@@ -1390,6 +1421,16 @@ void fish_callback (int tick, Canimation *anim, Csprite *fish, int sourceposX, i
     */
 }
 
+void diver_callback(int tick, Canimation *anim, Csprite *diver, int sourceposX, int sourceposY)
+{
+	if (!diver || !anim) { return; }
+	if (diver->callback_data1 == 0) { return; }
+	if (randomval(0, 100) > 60)
+	{
+		add_bubble(anim, diver, sourceposX - (diver->get_width() / 2), sourceposY - 6);
+	}
+}
+
 
 
 #define MINCROSSING_TIME (10000) //ms temps le plus rapide de passage d'un poisson à l'ecran
@@ -1401,22 +1442,27 @@ void add_fish(Canimation *anim, Csprite &fish)
     fish.m_underwater_only =true;
     fish.set_depth(randomval(3,22));
 
-    if ( fish.m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-fish.get_width();
+	if (fish.m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - fish.get_width();
+	}
 
     y = randomval(anim->waterlimit, anim->height()-fish.get_height() );
 
     int crossingtime=randomval(MINCROSSING_TIME,MAXCROSSING_TIME); // tps de traverser horizontalement 'ecran
-    if ( anim->width()< 40 )
-        crossingtime = crossingtime/2;
+	if (anim->width() < 40) {
+		crossingtime = crossingtime / 2;
+	}
     double dx = anim->width()*(double)ANIMATION_TICK_LENGTH/crossingtime; 
     double ddx = dx*randomval(-0.01, +0.01);
 
 
     crossingtime=randomval(MINCROSSING_TIME,5*MAXCROSSING_TIME); // tps de traverser verticalement l'ecran
-    if ( randomval(0,1)==1)crossingtime = -crossingtime;
+	if (randomval(0, 1) == 1) {
+		crossingtime = -crossingtime;
+	}
     double dy  = randomval( -tick2ms( 0.001 ), +tick2ms( 0.001 ) );// 0; //anim->height()*(double)ANIMATION_TICK_LENGTH/crossingtime; 
 
     fish.m_bouncetop   =
@@ -1448,35 +1494,47 @@ void add_randomfish(Canimation *anim, int nbfish)
     if ( anim->m_timetick>next_creation )
     {
 		next_creation=0;
-		if ( randomval(0,1000) < 999 )
-		{
-			int f=randomval(0,NB_ELEMENT(FishTab)-1);
-			FishTab[f]->callback_data1=1; // 1=avec des bulles possibles
-			add_fish(anim , *FishTab[f] );
-		}
-		else
-		{ // un p'tit gag de tps en tps
-			UFO.callback_data1=0;
-            UFO.m_animperiod=ms2tick(50);
-			add_fish(anim , UFO );
-		}
+		int f=randomval(0,NB_ELEMENT(FishTab)-1);
+		FishTab[f]->callback_data1=1; // 1=avec des bulles possibles
+		add_fish(anim , *FishTab[f] );
     }
+}
+
+void add_ufo(Canimation *anim, int posy_waterline)
+{
+	int dir = randomval(0, 1);
+
+	if (dir) {
+		UFO.m_sens = DIR_RIGHT;
+	}
+	else {
+		UFO.m_sens = DIR_LEFT;
+	}
+
+	UFO.callback_data1 = 0;
+	UFO.m_animperiod = ms2tick(50);
+
+	add_fish(anim, UFO);
 }
 
 void add_ship(Canimation *anim, int posy_waterline)
 {
     int dir=randomval(0,1);
 
-    if ( anim->width() <= Ship[dir].get_width() )
-        return;
-    if ( anim->height() <= Ship[dir].get_height() ) 
-        return;
+	if (anim->width() <= Ship[dir].get_width()) {
+		return;
+	}
+	if (anim->height() <= Ship[dir].get_height()) {
+		return;
+	}
 
     int x;
-    if ( Ship[dir].m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-Ship[dir].get_width();
+	if (Ship[dir].m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - Ship[dir].get_width();
+	}
 
 
     double dx=tick2ms( 0.014 );
@@ -1502,10 +1560,12 @@ void create_whale(Csprite &w, char *initialshape)
     for(int i=0; i<NB_ELEMENT(Water_spout0); i++)
     {
         CChaine ws;
-        if (w.m_sens==DIR_RIGHT)
-            ws = Water_spout1[i];
-        else
-            ws = Water_spout0[i];
+		if (w.m_sens == DIR_RIGHT) {
+			ws = Water_spout1[i];
+		}
+		else {
+			ws = Water_spout0[i];
+		}
 
         ws.AddChaine(initial.getstr());
         w.add_shape(ws.getstr());
@@ -1517,16 +1577,20 @@ void add_whale(Canimation *anim, int posy_waterline)
 {
     int dir=randomval(0,1);
 
-    if ( anim->width() <= Whale[dir].get_width() )
-        return;
-    if ( anim->height() <= Whale[dir].get_height() ) 
-        return;
+	if (anim->width() <= Whale[dir].get_width()) {
+		return;
+	}
+	if (anim->height() <= Whale[dir].get_height()) {
+		return;
+	}
 
 	int x;
-    if ( Whale[dir].m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-Whale[dir].get_width();
+	if (Whale[dir].m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - Whale[dir].get_width();
+	}
 
 	Whale[dir].m_animperiod = ms2tick(randomval(20,100)); // anime le jet entre 50 et 100ms
 
@@ -1557,16 +1621,20 @@ void add_shark(Canimation *anim, int posy_waterline)
 {
     int dir=randomval(0,1);
 
-    if ( anim->width() <= Shark[dir].get_width() )
-        return;
-    if ( anim->height() <= Shark[dir].get_height() ) 
-        return;
+	if (anim->width() <= Shark[dir].get_width()) {
+		return;
+	}
+	if (anim->height() <= Shark[dir].get_height()) {
+		return;
+	}
 
     int x;
-    if ( Shark[dir].m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-Shark[dir].get_width();
+	if (Shark[dir].m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - Shark[dir].get_width();
+	}
 
     int y = randomval(anim->waterlimit+3, anim->height()-Shark[dir].get_height()-3 );
 
@@ -1584,16 +1652,20 @@ void add_monster(Canimation *anim, int posy_waterline)
 {
     int dir=randomval(0,1);
 
-    if ( anim->width() <= Monster[dir].get_width() )
-        return;
-    if ( anim->height() <= Monster[dir].get_height() ) 
-        return;
+	if (anim->width() <= Monster[dir].get_width()) {
+		return;
+	}
+	if (anim->height() <= Monster[dir].get_height()) {
+		return;
+	}
 
     int x;
-    if ( Monster[dir].m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-Monster[dir].get_width();
+	if (Monster[dir].m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - Monster[dir].get_width();
+	}
 
 
 	Monster[dir].m_animperiod = ms2tick(250); //randomval( (int)(2/SPEED_COEF) , (int)(4/SPEED_COEF) );
@@ -1605,17 +1677,21 @@ void add_bigfish(Canimation *anim, int posy_waterline)
 {
     int dir=randomval(0,1);
 
-    if ( anim->width() <= Big_fish[dir].get_width() )
-        return;
-    if ( anim->height() <= Big_fish[dir].get_height() ) 
-        return;
+	if (anim->width() <= Big_fish[dir].get_width()) {
+		return;
+	}
+	if (anim->height() <= Big_fish[dir].get_height()) {
+		return;
+	}
 
 
     int x;
-    if ( Big_fish[dir].m_sens==DIR_LEFT) 
-        x = anim->width()-1;
-    else
-        x = 1-Big_fish[dir].get_width();
+	if (Big_fish[dir].m_sens == DIR_LEFT) {
+		x = anim->width() - 1;
+	}
+	else {
+		x = 1 - Big_fish[dir].get_width();
+	}
 
     int y = randomval(anim->waterlimit+3, anim->height()-Big_fish[dir].get_height()-3 );
 	Big_fish[dir].set_rand_colormask();
@@ -1632,16 +1708,20 @@ void add_ducks(Canimation *anim, int posy_waterline)
 {
 	int dir = randomval(0, 1);
 
-	if (anim->width() <= Ducks[dir].get_width())
+	if (anim->width() <= Ducks[dir].get_width()) {
 		return;
-	if (anim->height() <= Ducks[dir].get_height())
+	}
+	if (anim->height() <= Ducks[dir].get_height()) {
 		return;
+	}
 
 	int x;
-	if (Ducks[dir].m_sens == DIR_LEFT)
+	if (Ducks[dir].m_sens == DIR_LEFT) {
 		x = anim->width() - 1;
-	else
+	}
+	else {
 		x = 1 - Ducks[dir].get_width();
+	}
 
 
 	Ducks[dir].m_animperiod = ms2tick(500);
@@ -1653,21 +1733,38 @@ void add_swan(Canimation *anim, int posy_waterline)
 {
 	int dir = randomval(0, 1);
 
-	if (anim->width() <= Swans[dir].get_width())
+	if (anim->width() <= Swans[dir].get_width()) {
 		return;
-	if (anim->height() <= Swans[dir].get_height())
+	}
+	if (anim->height() <= Swans[dir].get_height()) {
 		return;
+	}
 
 	int x;
 	if (Swans[dir].m_sens == DIR_LEFT)
+	{
 		x = anim->width() - 1;
+	}
 	else
+	{
 		x = 1 - Swans[dir].get_width();
+	}
 
 
 	Swans[dir].m_animperiod = ms2tick(5000);
 	Swans[dir].m_animperiod = max(1, Swans[dir].m_animperiod);
 	anim->add_sprite(Swans[dir], x, posy_waterline + 3 - Swans[dir].get_height(), tick2ms(0.015), 0, 0, 0);
+}
+
+void add_diver(Canimation *anim, int posey_waterline)
+{
+	if (anim->width() > Diver.get_width() && anim->height() - anim->waterlimit > Diver.get_height())
+	{
+		Diver.m_life_duration = ms2tick(randomval(5000, 20000));
+		Diver.callback_data1 = 1;
+		Diver.m_generation = diver_callback;
+		anim->add_sprite(Diver, randomval(0, anim->width() - Diver.get_width()), anim->height() - Diver.get_height(), 0, 0, 0, 0);
+	}
 }
 
 void add_Dessin(Canimation *anim, int posy_waterline)
@@ -1721,8 +1818,8 @@ void add_Credit(Canimation *anim, int posy_waterline)
 {
     int x,y;
 
-        x = randomval(0, anim->width() - Credit.get_width() );
-        y = anim->height()-Credit.get_height();
+    x = randomval(0, anim->width() - Credit.get_width() );
+    y = anim->height()-Credit.get_height();
 
     // entre 0.5 et 2s
     Creditgrow.m_animperiod = ms2tick(200);
@@ -1749,66 +1846,75 @@ void add_Skull(Canimation *anim, int posy_waterline)
     anim->add_sprite(Skull, x, y  , 0, 0 ,  0,0);
 
 }
-typedef void ( *ADD_RANDOM_OBJ )(Canimation *anim, int posy_waterline);
 
-void add_random_object(Canimation *anim, int posy_waterline, bool favoriseCredits)
+std::vector<RandObj_t> init_randobj_list(bool noWaterline, int *totalWeight)
 {
-	ADD_RANDOM_OBJ lst[]=
-	{
-	add_Credit, // doit rester le premier de la liste
-    add_ship,   // on met plusieurs x la meme fonction dans la liste pour augmenter les chances de selection
-    add_ship,
-    add_whale,
-    add_whale,
-	add_shark,
-	add_shark,
-	add_shark,
-	add_monster,
-	add_monster,
-    add_bigfish,
-    add_bigfish,
-	add_Skull,
-	add_swan,
-	add_ducks,
-	//add_Dessin
+	const RandObj_t lst[] = {
+		{ add_Credit, 1, false },
+		{ add_ship, 10, true },
+		{ add_whale, 10, true },
+		{ add_shark, 15, false },
+		{ add_monster, 10, true },
+		{ add_bigfish, 10, false },
+		{ add_Skull, 3, false },
+		{ add_swan, 10, true },
+		{ add_ducks, 10, true },
+		{ add_ufo, 1, false },
+		{ add_diver, 10, false },
 	};
 
-    // en moyenne 1 ttes les 30s => entre 15 e 45s
+	std::vector<RandObj_t> objlist;
 
-    static int next_creation=0;
-    static bool firsttime=true;
-    if ( next_creation==0 )
-    {
-#ifdef FAST_ANIM
-		next_creation = anim->m_timetick + ms2tick(randomval(5000, 5001));
-		if (firsttime) {
-			next_creation = anim->m_timetick + ms2tick(randomval(1000, 2001));
-			firsttime = false;
+	*totalWeight = 0;
+
+	for (int x = 0; x < NB_ELEMENT(lst); x++) {
+		if (!(noWaterline && lst[x].needsWater)) {
+			objlist.push_back(lst[x]);
+			*totalWeight += lst[x].weight;
 		}
-#else
-        next_creation = anim->m_timetick + ms2tick(randomval(15000, 45000) );
-        if (favoriseCredits && firsttime)
-            next_creation = anim->m_timetick + ms2tick(randomval(5000, 20000) );
-#endif
-        return;
-    }
-    if ( anim->m_timetick>next_creation )
+	}
+
+	return objlist;
+}
+
+ADD_RANDOM_OBJ pick_random_obj(std::vector<RandObj_t> &lst, int totalWeight)
+{
+	int weight, idx, cur, len;
+
+	len = lst.size();
+
+	weight = randomval(0, totalWeight - 1);
+	cur = 0;
+
+	for (idx = 0; idx < len; idx++) {
+		cur += lst[idx].weight;
+		if (weight < cur) {
+			return lst[idx].func;
+		}
+	}
+	//default to a shark if the chooser fell through
+	return add_shark;
+}
+
+void add_random_object(std::vector<RandObj_t> &lst, int totalWeight, Canimation *anim, int posy_waterline)
+{
+	static int next_creation = 0;
+	static bool firsttime = true;
+	ADD_RANDOM_OBJ obj;
+
+    // en moyenne 1 ttes les 20s => entre 15 e 45s
+	if (firsttime) {
+		next_creation = anim->m_timetick + ms2tick(randomval(RANDOBJ_MIN_INIT, RANDOBJ_MAX_INIT));
+		firsttime = false;
+	}
+
+    if ( anim->m_timetick > next_creation )
     {
-        next_creation=0;
+		next_creation = anim->m_timetick + ms2tick(randomval(RANDOBJ_MIN_TICK, RANDOBJ_MAX_TICK));
+		obj = pick_random_obj(lst, totalWeight);
 
-	    int obj=randomval(0, NB_ELEMENT(lst)-1);
-        if (favoriseCredits)
-        {
-            if ( firsttime || randomval(0, 100)<25 )
-                obj=0;
-            firsttime=false;
-        }
-
-//obj=5; // pour test
-		lst[obj](anim, posy_waterline);
+		obj(anim, posy_waterline);
     }
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1820,45 +1926,47 @@ Caquarium::Caquarium()
 {
     m_initok=false;
     m_favoriseCredits=false;
+	m_randTotWeight = 0;
 }
+
 void Caquarium::init_scene(HWND hwnd, BOOL parentBackgroud /*if possible*/, int anim_period, int nbfish_desired, int sansEau, double densite, bool favoriseCredits)
 {
 #ifdef _DEBUG
-ShowConsoleWindow(TRUE);
+	ShowConsoleWindow(TRUE);
 #endif
 
-if(0) // test randomval()
-{
-#define NBR 101
+#if 0 // test randomval()
+	#define NBR 101
 
     int t[NBR];
     for(int i=0; i<NBR; i++) t[i]=0;
     for(int i=0; i<100000; i++) t[randomval(0,NBR-1)]++;
     for(int i=0; i<NBR; i++)
         printf("%u ",t[i] );
+#endif
 
-}
+	bool noWaterline = (sansEau) ? true : false;
 
+	m_objList = init_randobj_list(noWaterline, &m_randTotWeight);
 
-anim_period+=15;
-ANIMATION_TICK_LENGTH =		m_anim_period= anim_period;
-ANIMATION_TICK_LENGTH = max(15,ANIMATION_TICK_LENGTH);
+	anim_period+=15;
+	ANIMATION_TICK_LENGTH =		m_anim_period= anim_period;
+	ANIMATION_TICK_LENGTH = max(15,ANIMATION_TICK_LENGTH);
     initViewPort(hwnd,parentBackgroud);
 
     SetViewportInputProps();
-
 
     CreateViewportBuffer(0);
     SetViewportBufferProps();
 
     CreateViewportBuffer(1);
     SetViewportBufferProps();
-    if(0)
-    {
+
+#if 0
         DisplayViewportBuffer(0);
         DisplayViewportBuffer(1);
         SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
-    }
+#endif
 
     SetCurrentViewportBuffer(0);
 
@@ -1873,20 +1981,21 @@ ANIMATION_TICK_LENGTH = max(15,ANIMATION_TICK_LENGTH);
     m_anim.xSize = m_xSize;
     m_anim.ySize = m_ySize;
 
-
-    create_water_line(Water_line, m_xSize, sansEau?true:false);
+    create_water_line(Water_line, m_xSize, noWaterline);
 
     create_whale(Whale[0], Whale_shapes0);
     create_whale(Whale[1], Whale_shapes1);
 
 #define WATER_YTOP (6)
-    if ( m_anim.height() > Water_line.get_height()+WATER_YTOP+5 )
+    if ( !noWaterline && m_anim.height() > Water_line.get_height()+WATER_YTOP+5 )
     {
-        m_anim.add_sprite(Water_line,                        0, WATER_YTOP                        ,0,0,0,0);
+        m_anim.add_sprite(Water_line, 0, WATER_YTOP,0,0,0,0);
         m_anim.waterlimit=Water_line.get_height()+WATER_YTOP-1;
     }
-    else
-        m_anim.waterlimit = 0;
+	else
+	{
+		m_anim.waterlimit = 0;
+	}
 
     add_castel(&m_anim);
 /*
@@ -1899,8 +2008,10 @@ if ( m_anim.width()>Castel.get_width() && m_anim.height()-m_anim.waterlimit>Cast
 */
     add_all_seaweed(&m_anim);
 
-    if (densite<0 )
-        m_nbfish = max(0,nbfish_desired);
+	if (densite < 0)
+	{
+		m_nbfish = max(0, nbfish_desired);
+	}
     else
     {
         m_nbfish = (int)(sqrt((double)m_xSize*m_ySize)*densite);
@@ -1912,12 +2023,13 @@ if ( m_anim.width()>Castel.get_width() && m_anim.height()-m_anim.waterlimit>Cast
         if( m_nbfish/sqrt((double)m_xSize*m_ySize) > 0.5 )
         {
             m_nbfish = (int)(sqrt((double)m_xSize*m_ySize)* 0.5);
-            if (m_nbfish==0) m_nbfish=1;
+			if (m_nbfish == 0) { m_nbfish = 1; }
         }
     }
 
-    for(int i=0; i<m_nbfish;i++)
-        add_fish(&m_anim , *FishTab[ randomval(0,NB_ELEMENT(FishTab)-1) ] );
+	for (int i = 0; i < m_nbfish; i++) {
+		add_fish(&m_anim, *FishTab[randomval(0, NB_ELEMENT(FishTab) - 1)]);
+	}
 
     m_dispb=0;
     m_currb=1;
@@ -1934,49 +2046,49 @@ if ( m_anim.width()>Castel.get_width() && m_anim.height()-m_anim.waterlimit>Cast
 // renvoi 1 si il faut arrêter
 int Caquarium::drawnext_scene(void)
 {
-    if(!m_initok) return(0);
+	if (!m_initok) { return(0); }
 
-        DisplayViewportBuffer(m_dispb);
-        if ( getviewportnbevenement()>0 ) return(1);
-      //  Sleep(ANIMATION_TICK_LENGTH);
-        SetCurrentViewportBuffer(m_currb);
+    DisplayViewportBuffer(m_dispb);
+	if (getviewportnbevenement() > 0) { return(1); }
+	//Sleep(ANIMATION_TICK_LENGTH);
+    SetCurrentViewportBuffer(m_currb);
 
-        clearviewport(); 
+	clearviewport(); 
 
     
-        //add_randomseaweed(&m_anim);
-        add_randomfish(&m_anim, m_nbfish );
-        add_random_object(&m_anim, WATER_YTOP, m_favoriseCredits);
+    //add_randomseaweed(&m_anim);
+    add_randomfish(&m_anim, m_nbfish );
+	add_random_object(m_objList, m_randTotWeight, &m_anim, WATER_YTOP);
 
-        m_anim.timestep();
-        m_anim.move_sprite();
-        m_anim.drawscene();
-		m_anim.detect_collisions();
+    m_anim.timestep();
+    m_anim.move_sprite();
+    m_anim.drawscene();
+	m_anim.detect_collisions();
 
 
-        m_currb=(m_currb+1)%2;
-        m_dispb=(m_dispb+1)%2;
+    m_currb=(m_currb+1)%2;
+    m_dispb=(m_dispb+1)%2;
 
-        ULONG tps=chrono.GetElapsed_micros(); // ente total entre 2 draw
+    ULONG tps=chrono.GetElapsed_micros(); // ente total entre 2 draw
 
-        tmoy = tmoy*0.9+0.1*tps/1000;
+    tmoy = tmoy*0.9+0.1*tps/1000;
+    {
+        int static cpt=0;
+        if ((++cpt)%10==0)
         {
-            int static cpt=0;
-            if ((++cpt)%10==0)
-            {
-                //printf("%g\n", tmoy);
-                ANIMATION_TICK_LENGTH = (int)tmoy; // adapte ANIMATION_TICK_LENGTH au temps réellement passé
-            }
+            //printf("%g\n", tmoy);
+            ANIMATION_TICK_LENGTH = (int)tmoy; // adapte ANIMATION_TICK_LENGTH au temps réellement passé
         }
+    }
 
-        chrono.Start();
+    chrono.Start();
 
-        return(0);
+    return(0);
 }
 
 void Caquarium::close_scene(void)
 {
-    if(!m_initok) return;
+	if (!m_initok) { return; }
     m_anim.clear();
     closeViewPort();
     m_initok=false;

@@ -11,20 +11,23 @@ void initrandom(int seed)
 {
     srand(seed);
 }
+
+//return a random value such that
+// a <= value <= b
 int randomval(int a, int b)
 {
     int ret;
+	unsigned int randomValue;
+
     if (a>b)
     {
         ret=a;a=b;b=ret; // swap a,b
     }
-//    double r= rand();
-//    r = a + r*(b-a+1)/(RAND_MAX+1);
-	unsigned int randomValue;
-rand_s( &randomValue);
-    double r= randomValue;
-	double deltamax=UINT_MAX;//+1.0;
-    r = a + r*(b-a+1)/deltamax;
+
+
+	rand_s( &randomValue);
+    double r = randomValue;
+    r = a + r*(b-a+1)/UINT_MAX;
 
     ret = (int)(r);
     if (ret<a) // normalement ça peut pas arriver
