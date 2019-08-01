@@ -6,64 +6,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-Cposition::Cposition()
-{
-    m_x = m_y    =0.0;
-    m_dx = m_dy  =0.0;
-    m_ddx = m_ddy=0.0;
-}
-Cposition::Cposition(int x, int y, double dx, double dy, double ddx, double ddy)
-{
-    m_x = (double)x;
-    m_y = (double)y;
-    m_dx = dx;
-    m_dy = dy;
-    m_ddx = ddx;
-    m_ddy = ddy;
-}
-
-void Cposition::computeNewPostition(
-                                    int left, int top, int right,int bottom,
-                                    int widthobj,int heightobj,
-
-                                    bool m_bounceleft,
-                                    bool m_bouncetop,
-                                    bool m_bounceright, 
-                                    bool m_bouncebottom)
-{
-    m_x+=m_dx;
-    if (m_dx>0 && (m_dx+m_ddx)<=0) m_ddx = -m_ddx; // on veut pas de rebrousement=>on inverse l'acceleration
-    if (m_dx<0 && (m_dx+m_ddx)>=0) m_ddx = -m_ddx; // on veut pas de rebrousement=>on inverse l'acceleration
-    m_dx+=m_ddx;
-
-    if(m_bouncetop)
-    {
-        int x=0;
-    }
-    if (m_bouncetop && m_y+m_dy < top && m_dy<0 )
-    {
-        m_dy = -m_dy;
-    } else if (m_bouncebottom && m_y+heightobj-1+m_dy > bottom && m_dy>0 )
-    {
-        m_dy = -m_dy;
-    }
-    m_y+=m_dy;
-
-
-    m_dy+=m_ddy;
-}
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 Canimation::Canimation()
 {
     spriteListChanged=false;
     waterlimit = 0;
     m_timetick=1;
     m_nb_shape=0;
-    for (int i=0; i<MAX_ELEMENT; i++) used[i]=false;
 }
+
 Canimation::~Canimation()
 {
     clear();
@@ -74,7 +24,7 @@ void Canimation::clear(void)
 {
     for (int i=0; i<MAX_ELEMENT; i++)
     {
-        if ( used[i] ) 
+        if ( m_sprite[i].isValid() ) 
 			del_sprite(i);
     }
     waterlimit = 0;
@@ -118,7 +68,7 @@ void Canimation::create_depth_index(void)
     int n=0;
     for (int i=0; i<MAX_ELEMENT; i++)
     {
-        if ( used[i] ) 
+        if (m_sprite[i].isValid())
         {
             t[n].depth=m_sprite[i].get_depth();
             t[n].generation = m_sprite[i].m_creationtime;
@@ -143,19 +93,19 @@ int Canimation::add_sprite(Csprite &s, int x, int y, double dx, double dy, doubl
     // cherche une place dans used
     for (int i=0; i<MAX_ELEMENT; i++)
     {
-        if ( !used[i] ) {id=i;break;}
+        if ( !m_sprite[i].isValid()) {id=i;break;}
     }
     if (id==-1)
         return(id);
 
     m_nb_shape++;
-    used[id] = true;
     m_sprite[id] = s;
+	m_sprite[id].setValid(true);
     m_sprite[id].m_lifetick = 1; 
-    m_sprite[id].m_creationtime =  m_timetick;
-    if ( m_sprite[id].m_sens == -1 && dx>0) dx = -dx;
-    if ( m_sprite[id].m_sens == +1 && dx<0) dx = -dx;
-    m_pos[id] = Cposition(x,y, dx, dy, ddx, ddy);
+    m_sprite[id].m_creationtime = m_timetick;
+    if ( m_sprite[id].m_sens == DIR_LEFT && dx>0) dx = -dx;
+    if ( m_sprite[id].m_sens == DIR_RIGHT && dx<0) dx = -dx;
+    m_sprite[id].m_pos = Cposition(x,y, dx, dy, ddx, ddy);
     //m_timecallback[id] = animCallback;
 
     spriteListChanged=true;
@@ -165,7 +115,7 @@ int Canimation::add_sprite(Csprite &s, int x, int y, double dx, double dy, doubl
 
 void  Canimation::del_sprite(int index) // index, returned by add_sprite();
 {
-    used[index]=false;
+	m_sprite[index].setValid(false);
 	m_sprite[index].clear();
     m_nb_shape--;
     _ASSERT(m_nb_shape>=0);
@@ -173,20 +123,49 @@ void  Canimation::del_sprite(int index) // index, returned by add_sprite();
     spriteListChanged=true;
 }
 
+void Canimation::del_sprite(Csprite *spr)
+{
+	for (int i = 0; i < MAX_ELEMENT; i++) {
+		if (m_sprite[i].isValid() && &m_sprite[i] == spr) {
+			del_sprite(i);
+			break;
+		}
+	}
+}
+
 void Canimation::timestep(void)
 {
-    m_timetick ++;
+    m_timetick++;
+}
+
+void Canimation::detect_collisions(void)
+{
+	for (int i = 0; i < MAX_ELEMENT; i++)
+	{
+		if (m_sprite[i].isValid() && m_sprite[i].m_collcallback)
+		{
+			for (int j = 0; j < MAX_ELEMENT; j++)
+			{
+				if (m_sprite[j].isValid() && j != i)
+				{
+					if (m_sprite[i].collidesWith(m_sprite[j])) {
+						m_sprite[i].m_collcallback(this, &m_sprite[i], &m_sprite[j]);
+					}
+				}
+			}
+		}
+	}
 }
 
 void Canimation::move_sprite(void)
 {
     for (int i=0; i<MAX_ELEMENT; i++)
     {
-        if ( used[i] ) 
+        if ( m_sprite[i].isValid() ) 
         {
         int toplimite = m_sprite[i].m_underwater_only ? waterlimit : 0;
 
-        m_pos[i].computeNewPostition(0,toplimite ,xSize-1, ySize-1,m_sprite[i].get_width(),m_sprite[i].get_height(),
+        m_sprite[i].m_pos.computeNewPostition(0,toplimite ,xSize-1, ySize-1,m_sprite[i].get_width(),m_sprite[i].get_height(),
             m_sprite[i].m_bounceleft, m_sprite[i].m_bouncetop, m_sprite[i].m_bounceright, m_sprite[i].m_bouncebottom);
         }
     }
@@ -219,7 +198,7 @@ void Canimation::drawscene(void)
         }
 */
         int toplimite = m_sprite[id].m_underwater_only ? waterlimit : 0;
-        out_of_screen=m_sprite[id].dessine( fltround_to_int(m_pos[id].m_x), fltround_to_int(m_pos[id].m_y), 0,toplimite ,xSize-1, ySize-1, m_timetick, this);
+        out_of_screen=m_sprite[id].dessine( fltround_to_int(m_sprite[id].m_pos.m_x), fltround_to_int(m_sprite[id].m_pos.m_y), 0,toplimite ,xSize-1, ySize-1, m_timetick, this);
 
 		if (out_of_screen)
             delindex[i]=id;
@@ -244,7 +223,7 @@ void Canimation::drawscene(void)
         if (id!=-1)
         {
             if ( m_sprite[id].m_deathcallback )
-                m_sprite[id].m_deathcallback(m_timetick, this, &m_sprite[id],  fltround_to_int(m_pos[id].m_x), fltround_to_int(m_pos[id].m_y) );
+                m_sprite[id].m_deathcallback(m_timetick, this, &m_sprite[id],  fltround_to_int(m_sprite[id].m_pos.m_x), fltround_to_int(m_sprite[id].m_pos.m_y) );
             del_sprite(id);
         }
     }

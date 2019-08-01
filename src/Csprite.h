@@ -1,9 +1,5 @@
-
-
 #if !defined(CSPRITE_H_INCLUDED)
 #define CSPRITE_H_INCLUDED
-
-
 
 #include <vector>
 #include <algorithm>
@@ -16,19 +12,45 @@ class Csprite;
 class Canimation;
 
 typedef void ( *SPRITECALLBACK  )(int tick, Canimation*anim, Csprite*sprite, int spriteposX, int spriteposY);
+typedef void ( *COLLISIONCALLBACK) (Canimation *anim, Csprite *sprite1, Csprite *sprite2);
+
+typedef enum {
+	DIR_LEFT = 0,
+	DIR_RIGHT = 1,
+} direction_e;
+
+class Cposition
+{
+public:
+	Cposition();
+	Cposition(int x, int y, double dx, double dy, double ddx, double ddy);
+	void computeNewPostition(
+		int left = 0, int top = 0, int right = 0, int bottom = 0,
+		int widthobj = 0, int heightobj = 0,
+		bool bounceleft = false,
+		bool bouncetop = false,
+		bool bounceright = false,
+		bool bouncebottom = false);
+	double m_x;
+	double m_y;
+	double m_dx;
+	double m_dy;
+	double m_ddx;
+	double m_ddy;
+};
 
 class Csprite
 {
 public:
 	Csprite();
-	Csprite(const char *dessin,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, int sens=1, char*comment=NULL);
-	Csprite(const char **dessin, int nbshape, const char *colormask, COLORS defaultcolor=WHITE, int depth=0, int sens=1, char*comment=NULL);
+	Csprite(const char *dessin,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, direction_e sens=DIR_RIGHT, char*comment=NULL);
+	Csprite(const char **dessin, int nbshape, const char *colormask, COLORS defaultcolor=WHITE, int depth=0, direction_e sens=DIR_RIGHT, char*comment=NULL);
 	~Csprite();
 	void clear(void);
 
-	void init_sprite(const char **dessin, int nbshape,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, int sens=1);
-	void init_sprite(const char *dessin              ,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, int sens=1);
-    void init_sprite(vector<CChaine*> &shape         ,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, int sens=1);
+	void init_sprite(const char **dessin, int nbshape,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, direction_e sens=DIR_RIGHT);
+	void init_sprite(const char *dessin              ,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, direction_e sens=DIR_RIGHT);
+    void init_sprite(vector<CChaine*> &shape         ,const char *colormask, COLORS defaultcolor=WHITE, int depth=0, direction_e sens=DIR_RIGHT);
 
 	void copy(Csprite *src);
     Csprite& operator = ( const Csprite &source );
@@ -53,15 +75,21 @@ public:
 
     // data
 private:
+	void sprite_defaults(void);
     vector<CChaine*> m_shape;
     int m_height;
     int m_width;
+	int m_collX;
+	int m_collY;
+	bool m_valid;
+
 public:
+	Cposition m_pos;
 	//CChaine m_shape;
 	CChaine m_colormask_initial;
 	CChaine m_colormask;
     int m_depth;
-    int m_sens;
+    direction_e m_sens;
 
     int m_underwater_only;
     bool m_bouncetop; 
@@ -86,6 +114,14 @@ public:
     //
     SPRITECALLBACK m_generation; // appelé après dessine() à chaque 'tick'
     SPRITECALLBACK m_deathcallback; // appelé après dessine()
+	COLLISIONCALLBACK m_collcallback;
+
+	void setCollisionOffset(int x, int y);
+	void setValid(bool v);
+	bool isValid(void);
+	bool collidesWith(Csprite &c);
+	std::pair<int, int> getCenterPoint(void);
+	std::pair<int, int> getCollisionPoint(void);
 };
   
 #endif // defined(CSPRITE_H_INCLUDED)

@@ -31,7 +31,7 @@ int ANIMATION_TICK_LENGTH =50; // ms
 
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
-Csprite Water_line("","",CYAN, 22 ,1, "water_lines");
+Csprite Water_line("","",CYAN, 22 ,DIR_RIGHT, "water_lines");
 
 void create_water_line(Csprite &wl, int screen_width, bool sansEau)
 {
@@ -112,7 +112,7 @@ Csprite Castel(
 "            y y y y\n"
 "            yyyyyyy\n"
 ,
-DARKGRAY, 22,1,"castel" );
+DARKGRAY, 22,DIR_RIGHT,"castel" );
 
 Csprite Skull(
 /*
@@ -127,7 +127,7 @@ Csprite Skull(
 "$$.)\\_("
 
 ,
-"",LIGHTGRAY, 0,1 ,"skull");
+"",LIGHTGRAY, 0,DIR_RIGHT ,"skull");
 
 /*
  ,---.      .---.       .---.
@@ -159,7 +159,7 @@ Csprite fish01(
 " 66     7  4 5\n"
 "6  1      3 1\n"
 "    11111311"
-,BLACK,0,1, "fish01");
+,BLACK,0,DIR_RIGHT, "fish01");
 
 Csprite fish02(
 "$$$$$$/\n"  
@@ -175,7 +175,7 @@ Csprite fish02(
 "5 4  7     66\n"
 " 1 3      1  6\n"
 "  11311111"
-,BLACK,0,-1, "fish02");
+,BLACK,0,DIR_LEFT, "fish02");
 
 Csprite fish03(
 "$$$$\\\n"
@@ -189,7 +189,7 @@ Csprite fish03(
 "66  745\n"
 "6 1111\n"
 "    3"
-,BLACK,0,1, "fish03");
+,BLACK,0,DIR_RIGHT, "fish03");
 
 Csprite fish04(
 "$$/\n"
@@ -203,7 +203,7 @@ Csprite fish04(
 "547  66\n"
 " 1111 6\n"
 "  3"
-,BLACK,0,-1, "fish04");
+,BLACK,0, DIR_LEFT, "fish04");
 
 Csprite fish05(
 "$$$$$$$\\:.\n"
@@ -217,7 +217,7 @@ Csprite fish05(
 "  6661111111114\n"
 "  66611111111115\n"
 " 666 113333311"
-,BLACK,0,1, "fish05");
+,BLACK,0, DIR_RIGHT, "fish05");
 
 Csprite fish06(
 "$$$$$$.:/\n"
@@ -231,7 +231,7 @@ Csprite fish06(
 " 4111111111666\n"
 "51111111111666\n"
 "  113333311 666"
-,BLACK,0,-1, "fish06");
+,BLACK,0, DIR_LEFT, "fish06");
 
 Csprite fish07(
 "$$__\n"
@@ -241,7 +241,7 @@ Csprite fish07(
 "  11\n"
 "61145\n"
 "   3"
-,BLACK,0,1, "fish07");
+,BLACK,0, DIR_RIGHT, "fish07");
 
 Csprite fish08(
 "$__\n"
@@ -251,7 +251,7 @@ Csprite fish08(
 " 11\n"
 "54116\n"
 " 3"
-,BLACK,0,-1, "fish08");
+,BLACK,0, DIR_LEFT, "fish08");
 
 Csprite fish09(
 "$$$..\\,\n"
@@ -261,7 +261,7 @@ Csprite fish09(
 "   1121\n"
 "661   745\n"
 "  111311"
-,BLACK,0,1, "fish09");
+,BLACK,0, DIR_RIGHT, "fish09");
 
 Csprite fish10(
 "$$,/..\n"
@@ -271,7 +271,7 @@ Csprite fish10(
 "  1211\n"
 "547   166\n"
 " 113111"
-,BLACK,0,-1, "fish10");
+,BLACK,0, DIR_LEFT, "fish10");
 
 Csprite fish11(
 "$$$\\\n"
@@ -285,7 +285,7 @@ Csprite fish11(
 "661745\n"
 "  111\n"
 "   3"
-,BLACK,0,1, "fish11");
+,BLACK,0, DIR_RIGHT, "fish11");
 
 Csprite fish12(
 "$$/\n"
@@ -299,7 +299,7 @@ Csprite fish12(
 "547166\n"
 " 111\n"
 "  3"
-,BLACK,0,-1, "fish12");
+,BLACK,0, DIR_LEFT, "fish12");
 
 Csprite fish13(
 "$$,\\\n"
@@ -309,7 +309,7 @@ Csprite fish13(
 "  12\n"
 "66745\n"
 "  13"
-,BLACK,0,1, "fish13");
+,BLACK,0, DIR_RIGHT, "fish13");
 
 Csprite fish14(
 "$/,\n"
@@ -319,7 +319,7 @@ Csprite fish14(
 " 21\n"
 "54766\n"
 " 31"
-,BLACK,0,-1, "fish14");
+,BLACK,0, DIR_LEFT, "fish14");
 
 Csprite fish15(
 "$$__\n"
@@ -329,7 +329,7 @@ Csprite fish15(
 "  11\n"
 "61 41\n"
 "61111"
-,BLACK,0,1, "fish14");
+,BLACK,0, DIR_RIGHT, "fish14");
 
 Csprite fish16(
 " __\n"
@@ -339,19 +339,19 @@ Csprite fish16(
 " 11\n"
 "14 16\n"
 "11116"
-,BLACK,0,-1, "fish16");
+,BLACK,0, DIR_LEFT, "fish16");
 
 Csprite fish17(
 "><{{{{\">"
 ,
 "61212141"
-,BLACK,0,1, "fish17");
+,BLACK,0, DIR_RIGHT, "fish17");
 
 Csprite fish18(
 "<\"}}}}><"
 ,
 "14121216"
-,BLACK,0,-1, "fish18");
+,BLACK,0, DIR_LEFT, "fish18");
 /*
 ><>
 ><(((('>
@@ -518,7 +518,7 @@ Csprite UFO(UFOFrames, NB_ELEMENT(UFOFrames),
        "     1       1 \n"
        "   11         11 \n"
        "  111         111 "
-,GREEN, 0,1, "UFO");
+,GREEN, 0, DIR_RIGHT, "UFO");
 /*
 color code:
 	# 1: body
@@ -546,7 +546,7 @@ Csprite Ship[2] =
 "                   ww\n"
 "yyyyyyyyyyyyyyyyyyyywwwyy\n"
 "y                   y"
- ,WHITE,21,1, "ship2right")
+ ,WHITE,21,DIR_RIGHT, "ship2right")
 
 ,
     Csprite(	
@@ -563,7 +563,7 @@ Csprite Ship[2] =
 "    ww\n"
 "yywwwyyyyyyyyyyyyyyyyyyyy\n"
 "    y                   y"
-,WHITE,21,-1 ,"ship2left")
+,WHITE,21,DIR_LEFT ,"ship2left")
 
 };
 
@@ -596,7 +596,7 @@ Csprite Whale[2] =
 "      BB       BB\n"
 "B    B       BWB B\n"
 "BBBBB          BBBB"
-,WHITE,20,1 ,"whale2right")
+,WHITE,20,DIR_RIGHT ,"whale2right")
 ,
     Csprite(Whale_shapes1
 ,
@@ -607,7 +607,7 @@ Csprite Whale[2] =
 "  BB       BB\n"
 " B BWB       B    B\n"
 "BBBB          BBBBB"
-,WHITE,20,-1 ,"wale2left")
+,WHITE,20,DIR_LEFT,"wale2left")
 };
 
 char *Water_spout0[]=
@@ -695,7 +695,7 @@ Csprite Shark[2] =
 "                                          cWWWWWWWW\n"
 "\n"
 ""
-,CYAN,2,1 ,"shark2right")
+,CYAN,2,DIR_RIGHT ,"shark2right")
 ,
     Csprite(
 
@@ -720,7 +720,7 @@ Csprite Shark[2] =
 "  WWWWWWWWc\n"
 "\n"
 ""
-,CYAN,2,-1 ,"shark2left")
+,CYAN,2,DIR_LEFT ,"shark2left")
 };
 
 
@@ -778,8 +778,6 @@ const char *Monster_shapes1[] =
 "$$$$$$|     |$$$$/   \\$$$$$|     |$$$$|  ||  |$$$|     |$$$$$/ /"
 };
 
-
-
 Csprite Monster[2] = 
 {
     Csprite( Monster_shapes0,NB_ELEMENT(Monster_shapes0),
@@ -788,7 +786,7 @@ Csprite Monster[2] =
 "\n"
 "\n"
 ""
-,LIGHTGREEN, 0,1 ,"monster2right")
+,LIGHTGREEN, 0,DIR_RIGHT ,"monster2right")
 ,
     Csprite( Monster_shapes1,NB_ELEMENT(Monster_shapes1),
 "\n"
@@ -796,10 +794,131 @@ Csprite Monster[2] =
 "\n"
 "\n"
 ""
-,LIGHTGREEN, 0,-1 ,"monster2left")
+,LIGHTGREEN, 0,DIR_LEFT ,"monster2left")
 };
 
+const char *Duck_shapes0[] =
+{
+	"$$$$$$_$$$$$$$$$$_$$$$$$$$$$_\n"
+	",____(')=$$,____(')=$$,____(')<\n"
+	"$\\~~= ')$$$$\\~~= ')$$$$\\~~= ')"
+	,
+	"$$$$$$_$$$$$$$$$$_$$$$$$$$$$_\n"
+	",____(')=$$,____(')<$$,____(')=\n"
+	"$\\~~= ')$$$$\\~~= ')$$$$\\~~= ')"
+	,
+	"$$$$$$_$$$$$$$$$$_$$$$$$$$$$_\n"
+	",____(')<$$,____(')=$$,____(')=\n"
+	"$\\~~= ')$$$$\\~~= ')$$$$\\~~= ')"
+};
 
+const char *Duck_shapes1[] =
+{
+	"$$_$$$$$$$$$$_$$$$$$$$$$_$\n"
+	">(')____,$$=(')____,$$=(')____,\n"
+	"$(` =~~/$$$$(` =~~/$$$$(` =~~/"
+	,
+	"$$_$$$$$$$$$$_$$$$$$$$$$_$\n"
+	"=(')____,$$>(')____,$$=(')____,\n"
+	"$(` =~~/$$$$(` =~~/$$$$(` =~~/"
+	,
+	"$$_$$$$$$$$$$_$$$$$$$$$$_$\n"
+	"=(')____,$$=(')____,$$>(')____,\n"
+	"$(` =~~/$$$$(` =~~/$$$$(` =~~/"
+};
+
+Csprite Ducks[2] =
+{
+	Csprite(Duck_shapes0,NB_ELEMENT(Duck_shapes0),
+	"      g          g          g\n"
+	"wwwwwgcgy  wwwwwgcgy  wwwwwgcgy\n"
+	" wwww Ww    wwww Ww    wwww Ww"
+		,WHITE, 0,DIR_RIGHT ,"ducks2right")
+	,
+	Csprite(Duck_shapes1,NB_ELEMENT(Duck_shapes1),
+	"  g          g          g\n"
+	"ygcgwwwww  ygcgwwwww  ygcgwwwww\n"
+	" wW wwww    wW wwww    wW wwww"
+		,WHITE, 0,DIR_LEFT ,"ducks2left")
+};
+
+const char *Swan_shapes0[] =
+{
+"       ___\n"
+",_    / _,\\\n"
+"| \\   \\( \\|\n"
+"|  \\_  \\\\\n"
+"(_   \\_) \\\n"
+"(\\_   `   \\\n"
+" \\   -=~  /"
+};
+
+const char *Swan_shapes1[] =
+{
+" ___\n"
+"/,_ \\    _,\n"
+"|/ )/   / |\n"
+"  //  _/  |\n"
+" / ( /   _)\n"
+"/   `   _/)\n"
+"\\  ~=-   /"
+};
+
+Csprite Swans[2] =
+{
+	Csprite(Swan_shapes0,NB_ELEMENT(Swan_shapes0),
+"\n"
+"         g\n"
+"         yy"
+		,WHITE, 0,DIR_RIGHT ,"swan2right")
+	,
+	Csprite(Swan_shapes1,NB_ELEMENT(Swan_shapes1),
+"\n"
+" g\n"
+"yy"
+		,WHITE, 0,DIR_LEFT ,"swan2left")
+};
+
+const char *Splat_shapes[] =
+{
+	"$$$$$$$\n"
+	"$$$$$.\n"
+	"$$$$***\n"
+	"$$$$$'\n"
+	"$$$$$$$"
+	,
+	"$$$$$$$\n"
+	"$$$$,*;`\n"
+	"$$$\"*,**\n"
+	"$$$$*\"'~'\n"
+	"$$$$$$$"
+	,
+	"$$$$, ,\n"
+	"$$$$\" \", \"'\n"
+	"$$$$*\" *'\"\n"
+	"$$$$\" ; ."
+	"$$$$$$$"
+	,
+	"$$$$* ' , ' `\n"
+	"$$$$' ` * . '\n"
+	"$$$$' `' \",'\n"
+	"$$$$* ' \" * .\n"
+	"$$$$\" * ', '"
+	,
+	"$$$$* ' , ' `\n"
+	"$$$$' ` * . '\n"
+	"$$$$' `' \",'\n"
+	"$$$$* ' \" * .\n"
+	"$$$$\" * ', '"
+};
+
+Csprite Splat(Splat_shapes, NB_ELEMENT(Splat_shapes),
+	"\n"
+	"\n"
+	"\n"
+	"\n"
+	""
+	, LIGHTRED, 0, DIR_RIGHT, "splat");
 
 
 Csprite Big_fish[2] = 
@@ -834,7 +953,7 @@ Csprite Big_fish[2] =
 "   111111111111111111111\n"
 "   11             1111\n"
 "               11111"
-,YELLOW, 0,1 ,"bigfish2right")
+,YELLOW, 0,DIR_RIGHT ,"bigfish2right")
 ,
     Csprite(
 "$$$$$$$$$$$$$$$$$$$$$$$$$$$______\n"
@@ -866,7 +985,7 @@ Csprite Big_fish[2] =
 "          111111111111111111111\n"
 "            1111             11\n"
 "              11111"
-,YELLOW, 0,-1 ,"bigfish2left")
+,YELLOW, 0,DIR_LEFT ,"bigfish2left")
 };
 
 Csprite Dessin(
@@ -905,7 +1024,7 @@ Csprite Dessin(
 "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$~*MM%%%%%%@f`\n"
 "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'''''"
 ,""
-,DARKGRAY, 0,1 ,"knot");
+,DARKGRAY, 0,DIR_RIGHT ,"knot");
 
 /*
 _/\__/\__0>
@@ -976,7 +1095,7 @@ Csprite Creditgrow(CreditgrowFrames, NB_ELEMENT(CreditgrowFrames),
 " G                                           G \n"
 " GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG \n"
 */
-,LIGHTGRAY, 0,1 ,"credit");
+,LIGHTGRAY, 0, DIR_RIGHT,"credit");
 
 Csprite Credit(
 "$ ___________________________________________ $\n"
@@ -998,7 +1117,7 @@ Csprite Credit(
 " G                                           G \n"
 " GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG \n"
 */
-,LIGHTGRAY, 0,1 ,"credit");
+,LIGHTGRAY, 0, DIR_RIGHT,"credit");
 
 
 double tick2ms(double tick)
@@ -1118,7 +1237,7 @@ void add_seaweed(Canimation *anim)
 		"", GREEN, 
         randomval(1,10)<10 ? 21  // 9 fois sur dix au fond
         : randomval(3,20)        // 1 fois sur dix à l'avant plan
-        ,1,"seaweed");
+        ,DIR_RIGHT,"seaweed");
 	s.add_shape("");
 
 	s.callback_data1 = height;    // data1 = taille 'adulte'
@@ -1204,7 +1323,7 @@ void add_splash (Canimation *anim, Csprite *source, int sourceposX, int sourcepo
         
 ,NB_ELEMENT(splash)
         ,"", CYAN, 
-        source->get_depth(),  1,"splash"
+        source->get_depth(), DIR_RIGHT ,"splash"
         );
 
     b.m_underwater_only = false;
@@ -1237,13 +1356,13 @@ void add_bubble (Canimation *anim, Csprite *source, int sourceposX, int sourcepo
 	Csprite b(bulles, NB_ELEMENT(bulles)
         ,"", CYAN, 
         source->get_depth()-1 // # bubble always goes on top of the fish
-        , 1,"bubble");
+        , DIR_RIGHT, "bubble");
 
     b.m_underwater_only = true;
 
 
     sourceposY += source->get_height()/2;
-    if (source->m_sens==1) sourceposX += source->get_width();
+    if (source->m_sens==DIR_RIGHT) sourceposX += source->get_width();
 
     //    b.m_animperiod = anim->height()/5;
     int nbshape=b.get_nb_shape();
@@ -1282,7 +1401,7 @@ void add_fish(Canimation *anim, Csprite &fish)
     fish.m_underwater_only =true;
     fish.set_depth(randomval(3,22));
 
-    if ( fish.m_sens==-1) 
+    if ( fish.m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-fish.get_width();
@@ -1354,7 +1473,7 @@ void add_ship(Canimation *anim, int posy_waterline)
         return;
 
     int x;
-    if ( Ship[dir].m_sens==-1) 
+    if ( Ship[dir].m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-Ship[dir].get_width();
@@ -1383,7 +1502,7 @@ void create_whale(Csprite &w, char *initialshape)
     for(int i=0; i<NB_ELEMENT(Water_spout0); i++)
     {
         CChaine ws;
-        if (w.m_sens==1)
+        if (w.m_sens==DIR_RIGHT)
             ws = Water_spout1[i];
         else
             ws = Water_spout0[i];
@@ -1404,7 +1523,7 @@ void add_whale(Canimation *anim, int posy_waterline)
         return;
 
 	int x;
-    if ( Whale[dir].m_sens==-1) 
+    if ( Whale[dir].m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-Whale[dir].get_width();
@@ -1414,6 +1533,24 @@ void add_whale(Canimation *anim, int posy_waterline)
 
     Whale[dir].m_animperiod = max(1,Whale[dir].m_animperiod);
     anim->add_sprite(Whale[dir], x, posy_waterline+3-Whale[dir].get_height()  ,  tick2ms(0.01) , 0 , 0,0);
+}
+
+void shark_collision(Canimation *anim, Csprite *sprite1, Csprite *sprite2)
+{
+	//if we didn't collide with a fish, ignore it
+	if (strncmp(sprite2->m_comment.getstr(), "fish", 4) != 0) {
+		return;
+	}
+
+	std::pair<int, int> center = sprite2->getCenterPoint();
+
+	Splat.m_life_duration = ms2tick(2800);
+	Splat.m_animperiod = ms2tick(700);
+	Splat.m_sens = sprite2->m_sens;
+	double dx = tick2ms(0.04);
+	//make the fish that was eaten explode
+	anim->add_sprite(Splat, center.first, center.second, 0.5, 0, 0, 0);
+	anim->del_sprite(sprite2);
 }
 
 void add_shark(Canimation *anim, int posy_waterline)
@@ -1426,7 +1563,7 @@ void add_shark(Canimation *anim, int posy_waterline)
         return;
 
     int x;
-    if ( Shark[dir].m_sens==-1) 
+    if ( Shark[dir].m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-Shark[dir].get_width();
@@ -1436,7 +1573,9 @@ void add_shark(Canimation *anim, int posy_waterline)
     double dx=  tick2ms( 0.04 );
     double ddx = dx*randomval(-0.01,0.01);
 
-
+	Shark[dir].m_collcallback = &shark_collision;
+	//set the collision detection for the teeth
+	Shark[dir].setCollisionOffset(-3, 7);
     anim->add_sprite(Shark[dir], x, y  , dx , 0 , ddx,0);
 }
 
@@ -1451,7 +1590,7 @@ void add_monster(Canimation *anim, int posy_waterline)
         return;
 
     int x;
-    if ( Monster[dir].m_sens==-1) 
+    if ( Monster[dir].m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-Monster[dir].get_width();
@@ -1473,7 +1612,7 @@ void add_bigfish(Canimation *anim, int posy_waterline)
 
 
     int x;
-    if ( Big_fish[dir].m_sens==-1) 
+    if ( Big_fish[dir].m_sens==DIR_LEFT) 
         x = anim->width()-1;
     else
         x = 1-Big_fish[dir].get_width();
@@ -1489,6 +1628,48 @@ void add_bigfish(Canimation *anim, int posy_waterline)
     anim->add_sprite(Big_fish[dir], x, y  , dx , 0 , ddx,0);
 }
 
+void add_ducks(Canimation *anim, int posy_waterline)
+{
+	int dir = randomval(0, 1);
+
+	if (anim->width() <= Ducks[dir].get_width())
+		return;
+	if (anim->height() <= Ducks[dir].get_height())
+		return;
+
+	int x;
+	if (Ducks[dir].m_sens == DIR_LEFT)
+		x = anim->width() - 1;
+	else
+		x = 1 - Ducks[dir].get_width();
+
+
+	Ducks[dir].m_animperiod = ms2tick(500);
+	Ducks[dir].m_animperiod = max(1, Ducks[dir].m_animperiod);
+	anim->add_sprite(Ducks[dir], x, posy_waterline + 1 - Ducks[dir].get_height(), tick2ms(0.015), 0, 0, 0);
+}
+
+void add_swan(Canimation *anim, int posy_waterline)
+{
+	int dir = randomval(0, 1);
+
+	if (anim->width() <= Swans[dir].get_width())
+		return;
+	if (anim->height() <= Swans[dir].get_height())
+		return;
+
+	int x;
+	if (Swans[dir].m_sens == DIR_LEFT)
+		x = anim->width() - 1;
+	else
+		x = 1 - Swans[dir].get_width();
+
+
+	Swans[dir].m_animperiod = ms2tick(5000);
+	Swans[dir].m_animperiod = max(1, Swans[dir].m_animperiod);
+	anim->add_sprite(Swans[dir], x, posy_waterline + 3 - Swans[dir].get_height(), tick2ms(0.015), 0, 0, 0);
+}
+
 void add_Dessin(Canimation *anim, int posy_waterline)
 {
     Dessin.m_underwater_only = true;
@@ -1501,7 +1682,6 @@ void add_Dessin(Canimation *anim, int posy_waterline)
 
     anim->add_sprite(Dessin, x, y  , 0,dy ,  0,0);
 }
-
 /*
 	switch( randomval(1,4) ) 
     {
@@ -1520,13 +1700,13 @@ void add_Dessin(Canimation *anim, int posy_waterline)
         x = 1-Credit.get_width();
         y = randomval(underwater?anim->waterlimit:0, anim->height()-Credit.get_height() );
         dy=0;
-        Credit.m_sens = 1;
+        Credit.m_sens = DIR_RIGHT;
         break;
     case 4: // to left
         x = anim->width()-1;
         y = randomval(underwater?anim->waterlimit:0, anim->height()-Credit.get_height() );
         dy=0;
-        Credit.m_sens = -1;
+        Credit.m_sens = DIR_LEFT;
         break;
     }
 */
@@ -1582,11 +1762,14 @@ void add_random_object(Canimation *anim, int posy_waterline, bool favoriseCredit
     add_whale,
 	add_shark,
 	add_shark,
+	add_shark,
 	add_monster,
 	add_monster,
     add_bigfish,
     add_bigfish,
 	add_Skull,
+	add_swan,
+	add_ducks,
 	//add_Dessin
 	};
 
@@ -1594,12 +1777,19 @@ void add_random_object(Canimation *anim, int posy_waterline, bool favoriseCredit
 
     static int next_creation=0;
     static bool firsttime=true;
-
     if ( next_creation==0 )
     {
+#ifdef FAST_ANIM
+		next_creation = anim->m_timetick + ms2tick(randomval(5000, 5001));
+		if (firsttime) {
+			next_creation = anim->m_timetick + ms2tick(randomval(1000, 2001));
+			firsttime = false;
+		}
+#else
         next_creation = anim->m_timetick + ms2tick(randomval(15000, 45000) );
         if (favoriseCredits && firsttime)
             next_creation = anim->m_timetick + ms2tick(randomval(5000, 20000) );
+#endif
         return;
     }
     if ( anim->m_timetick>next_creation )
@@ -1754,13 +1944,14 @@ int Caquarium::drawnext_scene(void)
         clearviewport(); 
 
     
-        add_randomseaweed(&m_anim);
+        //add_randomseaweed(&m_anim);
         add_randomfish(&m_anim, m_nbfish );
         add_random_object(&m_anim, WATER_YTOP, m_favoriseCredits);
 
         m_anim.timestep();
         m_anim.move_sprite();
         m_anim.drawscene();
+		m_anim.detect_collisions();
 
 
         m_currb=(m_currb+1)%2;
